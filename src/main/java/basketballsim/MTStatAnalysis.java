@@ -4,17 +4,20 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-/**
- * @author Francisco Di Giglio
- */
-public class StatisticalAnalysis{
-    /**
-     * Make this a multi threaded in order to improve speed on running games in the millions
-     */
-    public static String[][] playNumGames(Team team1, Team team2, int nTimes){
+public class MTStatAnalysis {
+    private final Object lock = new Object();
+
+    private void playNGames(Game game, int x){
+        for(int i=0; i<x; i++){
+            game.playGame();
+        }
+    }
+
+    public String[][] playNumGames(Team team1, Team team2, int nTimes){
         String[] headers = {"NAME", "WIN %", "# of Wins"};
         Game game = new Game(team1, team2);
         String[][] stats = {
@@ -23,8 +26,23 @@ public class StatisticalAnalysis{
             {team2.getName().toUpperCase(), null, null}
         };
 
-        for(int i=0; i<nTimes; i++){
-            game.playGame();
+        final int chunk = (int) (nTimes / 1000);
+
+        ArrayList<Thread> threads = new ArrayList<>();
+        for(int i=0; i<nTimes; i+=chunk){
+            Thread thread = new Thread(() ->{
+                synchronized(game){
+                    playNGames(game, chunk);
+                }
+            });
+            thread.start();
+            threads.add(thread);
+        }
+
+        for(Thread thread: threads){
+            try {
+                thread.join();
+            } catch (InterruptedException e) {}
         }
         
         double team1WinPercentage = (double)team1.getWins() / (team1.getGamesPlayed()) * 100;
@@ -68,6 +86,7 @@ public class StatisticalAnalysis{
             System.out.print("Not an even number, enter number of teams playing >> ");
             sizeOfArray = scan.nextInt();
         }
+        
 
         System.out.print("Enter today's date (12052023)>> ");
         String date = scan.next();
@@ -92,7 +111,8 @@ public class StatisticalAnalysis{
         for(int i=0; i<arrayOfTeams.length; i+=2){
             Team team1 = arrayOfTeams[i];
             Team team2 = arrayOfTeams[i+1];
-            String[][] stats = playNumGames(team1, team2, 13000);
+            MTStatAnalysis mt = new MTStatAnalysis();
+            String[][] stats = mt.playNumGames(team1, team2, 13000);
             System.out.println(createFile(stats, filepath));
         }
         long end = System.currentTimeMillis();
@@ -101,4 +121,7 @@ public class StatisticalAnalysis{
 
         System.out.println(Arrays.toString(arrayOfTeams));
     }
+
+
+    
 }
