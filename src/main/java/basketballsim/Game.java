@@ -135,10 +135,12 @@ public class Game implements Possession{
             // Check for subs before possession
             // System.out.println(checkLowestMinutes(offensiveTeam) + ":::" + checkLowestMinutes(offensiveTeam).getTimePlayed() + ":::" + checkLowestMinutes(offensiveTeam).getMinutesPlayed());
             if(checkLowestMinutes(offensiveTeam).getTimePlayed() <= 0 && !benchMinZero(offensiveTeam.getFiveOnBench())){
+                // System.out.println("SUBS FOR " + offensiveTeam.getName());
                 subs(offensiveTeam); 
                 offensiveTeam.totalUsageRate();
             }
             if(checkLowestMinutes(defensiveTeam).getTimePlayed() <= 0 && !benchMinZero(defensiveTeam.getFiveOnBench())){
+                // System.out.println("SUBS FOR " + defensiveTeam.getName());
                 subs(defensiveTeam);
                 defensiveTeam.totalUsageRate();
             }
@@ -340,12 +342,12 @@ public class Game implements Possession{
         Team bucks = new Team("bucks");
 
         Game game = new Game(heat, bucks);
-        long startTime = System.nanoTime();
-        for(int i=0; i<35000; i++){
+        long startTime = System.currentTimeMillis();
+        for(int i=0; i<12500; i++){
             game.playGame();
         }
-        long endTime = System.nanoTime();
-        double totalTime = (endTime - startTime) / 1000000000.0;
+        long endTime = System.currentTimeMillis();
+        double totalTime = (endTime - startTime) / 1000.0;
         System.out.println(totalTime + " seconds");
 
         // game.playGame();
