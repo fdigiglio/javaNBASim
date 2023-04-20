@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * @author Francisco Di Giglio
  */
-public class StatisticalAnalysis {
+public class StatisticalAnalysis{
     /**
      * Make this a multi threaded in order to improve speed on running games in the millions
      */
@@ -54,7 +54,7 @@ public class StatisticalAnalysis {
             System.out.println("FILE NOT FOUND");
         }
 
-        return "Completed " + stats[0][0] + " vs. " + stats[1][0];
+        return "Completed " + stats[1][0] + " vs. " + stats[2][0];
     }
 
     public static void main(String[] args) {
@@ -88,11 +88,14 @@ public class StatisticalAnalysis {
         }
 
         scan.close();
-
         for(int i=0; i<arrayOfTeams.length; i+=2){
             Team team1 = arrayOfTeams[i];
             Team team2 = arrayOfTeams[i+1];
+            long start = System.currentTimeMillis();
             String[][] stats = playNumGames(team1, team2, 15000);
+            long end = System.currentTimeMillis();
+            double totalTime = (end - start) / 1000.0;
+            System.out.println("Took " + totalTime + " seconds");
             System.out.println(createFile(stats, filepath));
         }
 
