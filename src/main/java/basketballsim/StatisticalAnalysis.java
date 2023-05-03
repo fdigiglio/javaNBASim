@@ -88,16 +88,17 @@ public class StatisticalAnalysis{
         }
 
         scan.close();
+        int amountOfTimes = 13500;
         long start = System.currentTimeMillis();
         for(int i=0; i<arrayOfTeams.length; i+=2){
             Team team1 = arrayOfTeams[i];
             Team team2 = arrayOfTeams[i+1];
-            String[][] stats = playNumGames(team1, team2, 13000);
+            String[][] stats = playNumGames(team1, team2, amountOfTimes);
             System.out.println(createFile(stats, filepath));
         }
         long end = System.currentTimeMillis();
         double totalTime = (end - start) / 1000.0;
-        System.out.println("Took " + totalTime + " seconds to simulate " + (arrayOfTeams.length / 2) + " number of fixtures 13000 times each");
+        System.out.println("Took " + totalTime + " seconds to simulate " + (arrayOfTeams.length / 2) + " number of fixtures " + amountOfTimes + " times each");
 
         System.out.println(Arrays.toString(arrayOfTeams));
     }

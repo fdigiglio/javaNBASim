@@ -139,6 +139,10 @@ public class Team {
         this.teamTime.add(time);
     }
 
+    public void clearTime(){
+        this.teamTime.clear();
+    }
+
     public ArrayList<Integer> getTeamTime(){
         return this.teamTime;
     }
