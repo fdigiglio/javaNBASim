@@ -27,10 +27,11 @@ public class Game implements Possession{
     public Game(Team homeTeam, Team awayTeam){
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
-        System.out.println(Arrays.toString(homeTeam.getFiveOnCourt()) + "STARTING 5 HOME TEAM");
-        System.out.println(Arrays.toString(homeTeam.getFiveOnBench()) + "BENCH 5 HOME TEAM");
-        System.out.println(Arrays.toString(awayTeam.getFiveOnCourt()) + "STARTING 5 AWAY TEAM");
-        System.out.println(Arrays.toString(awayTeam.getFiveOnBench()) + "BENCH 5 AWAY TEAM");
+        // Print Statement for debugging games
+        // System.out.println(Arrays.toString(homeTeam.getFiveOnCourt()) + "STARTING 5 HOME TEAM");
+        // System.out.println(Arrays.toString(homeTeam.getFiveOnBench()) + "BENCH 5 HOME TEAM");
+        // System.out.println(Arrays.toString(awayTeam.getFiveOnCourt()) + "STARTING 5 AWAY TEAM");
+        // System.out.println(Arrays.toString(awayTeam.getFiveOnBench()) + "BENCH 5 AWAY TEAM");
         // Set Possession Counter for each team
         int homePossessionCounter = 0;
         int awayPossessionCounter = 0;

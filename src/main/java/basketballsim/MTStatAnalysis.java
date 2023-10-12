@@ -115,6 +115,8 @@ public class MTStatAnalysis {
     public static void main(String[] args) {
         /**
          * ADD ANOTHER COLUMN TO GAME STATS COMPARING HOW MANY GAMES ONE 
+         * AUTOMATE THIS 
+         * Create a season directory to
          */
         Scanner scan = new Scanner(System.in);
         System.out.print("Enter number of teams playing >> ");

@@ -60,8 +60,19 @@ public class StatisticalAnalysis{
     public static void main(String[] args) {
         /**
          * ADD ANOTHER COLUMN TO GAME STATS COMPARING HOW MANY GAMES ONE 
+         * AUTOMATE THIS ()
+         * Create a season directory to (DONE)
+         * Add homecourt advantage shooting percentage (implemented in the scrape file) (DONE)
+         * Add functionality of newly added home and away shooting percentages (DONE)
          */
         Scanner scan = new Scanner(System.in);
+
+        System.out.print("Enter Team for preseason testing >> ");
+        String teamCurrent = scan.nextLine();
+
+        System.out.print("Enter home or away >> ");
+        String homeOrAway = scan.nextLine();
+
         System.out.print("Enter number of teams playing >> ");
         int sizeOfArray = scan.nextInt();
         while(sizeOfArray % 2 != 0){
@@ -71,7 +82,10 @@ public class StatisticalAnalysis{
 
         System.out.print("Enter today's date (12052023)>> ");
         String date = scan.next();
-        String filepath = "data/statsOfGames/" + date;
+        // For Season Games
+        // String filepath = "data/statsOfGames/2023-2024-Season/Games/" + date;
+        // For preseason predictions
+        String filepath = "data/statsOfGames/2023-2024-Season/Preseason-Predictions/" + teamCurrent + "/" + homeOrAway;
         File file = new File(filepath);
         file.mkdir();
 
@@ -79,9 +93,20 @@ public class StatisticalAnalysis{
         System.out.print("Enter team names separated with a space >> ");
         String input = scan.next().trim();
         int index = 0;
+        // For Season simulation turn isHome to true
+        boolean isHome = false;
         while(!input.equals("q")){
             System.out.println(input);
-            Team team = new Team(input);
+            Team team;
+            //Adds margin depending if home team or not
+            if(isHome) {
+                team = new Team(input, 'H');
+                isHome = false;
+            }
+            else {
+                team = new Team(input, 'A');
+                isHome = true;
+            }
             arrayOfTeams[index] = team;
             index++;
             input = scan.next().trim();

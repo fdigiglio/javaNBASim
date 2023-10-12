@@ -178,6 +178,14 @@ public class Player implements Comparable<Player>{
         return this.twoPointAttempted / (this.twoPointAttempted + this.threePointAttempted);
     }
 
+    public void setTwoPointPercentage(double newTwoPointPercentage){
+        this.twoPointPercentage = newTwoPointPercentage;
+    }
+
+    public void setThreePointPercentage(double newThreePointPercentage){
+        this.threePointPercentage = newThreePointPercentage;
+    }
+
     @Override
     public String toString(){
         return "P{" + this.name + ", " + this.position.toString() + ", " + this.age + ", "

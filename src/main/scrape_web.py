@@ -10,6 +10,7 @@ Use another website to scrape injury reports
 https://www.rotowire.com/basketball/injury-report.php
 
 """
+#General Team Stats
 heat = "https://www.basketball-reference.com/teams/MIA/2023.html"
 bos = "https://www.basketball-reference.com/teams/BOS/2023.html"
 lal = "https://www.basketball-reference.com/teams/LAL/2023.html"
@@ -45,15 +46,53 @@ bkn = "https://www.basketball-reference.com/teams/BRK/2023.html"
 det = "https://www.basketball-reference.com/teams/DET/2023.html"
 ind = "https://www.basketball-reference.com/teams/IND/2023.html"
 
+
+#Splits Team Stats URLs
+heat_splits = "https://www.basketball-reference.com/teams/MIA/2023/splits"
+bos_splits = "https://www.basketball-reference.com/teams/BOS/2023/splits"
+lal_splits = "https://www.basketball-reference.com/teams/LAL/2023/splits"
+lac_splits = "https://www.basketball-reference.com/teams/LAC/2023/splits"
+cha_splits = "https://www.basketball-reference.com/teams/CHO/2023/splits"
+atl_splits = "https://www.basketball-reference.com/teams/ATL/2023/splits"
+
+orl_splits = "https://www.basketball-reference.com/teams/ORL/2023/splits"
+mem_splits = "https://www.basketball-reference.com/teams/MEM/2023/splits"
+nop_splits = "https://www.basketball-reference.com/teams/NOP/2023/splits"
+was_splits = "https://www.basketball-reference.com/teams/WAS/2023/splits"
+sas_splits = "https://www.basketball-reference.com/teams/SAS/2023/splits"
+dal_splits = "https://www.basketball-reference.com/teams/DAL/2023/splits"
+
+hou_splits = "https://www.basketball-reference.com/teams/HOU/2023/splits"
+pho_splits = "https://www.basketball-reference.com/teams/PHO/2023/splits"
+gsw_splits = "https://www.basketball-reference.com/teams/GSW/2023/splits"
+sac_splits = "https://www.basketball-reference.com/teams/SAC/2023/splits"
+por_splits = "https://www.basketball-reference.com/teams/POR/2023/splits"
+uta_splits = "https://www.basketball-reference.com/teams/UTA/2023/splits"
+
+tim_splits = "https://www.basketball-reference.com/teams/MIN/2023/splits"
+den_splits = "https://www.basketball-reference.com/teams/DEN/2023/splits"
+okc_splits = "https://www.basketball-reference.com/teams/OKC/2023/splits"
+nyk_splits = "https://www.basketball-reference.com/teams/NYK/2023/splits"
+tor_splits = "https://www.basketball-reference.com/teams/TOR/2023/splits"
+phi_splits = "https://www.basketball-reference.com/teams/PHI/2023/splits"
+
+mil_splits = "https://www.basketball-reference.com/teams/MIL/2023/splits"
+chi_splits = "https://www.basketball-reference.com/teams/CHI/2023/splits"
+cle_splits = "https://www.basketball-reference.com/teams/CLE/2023/splits"
+bkn_splits = "https://www.basketball-reference.com/teams/BRK/2023/splits"
+det_splits = "https://www.basketball-reference.com/teams/DET/2023/splits"
+ind_splits = "https://www.basketball-reference.com/teams/IND/2023/splits"
+
 INJURED = set()    
 
-def injury_scrape(url):
-    page = requests.get(url)
-    soup = BeautifulSoup(page.text, 'lxml')
-    players = soup.find_all('span', class_="CellPlayerName--long")
-    for player in players:
-        player = player.find('a').text
-        INJURED.add(player)
+def injury_scrape(path):
+    with open(path, 'r', encoding='utf-8') as file:
+        contents = file.read()
+        soup = BeautifulSoup(contents, 'lxml')
+        players = soup.find_all('span', class_="CellPlayerName--long")
+        for player in players:
+            player = player.find('a').text
+            INJURED.add(player)
 
 
 def save_page(url, team_name):
@@ -68,6 +107,20 @@ def save_page_possession_time(url):
     soup = BeautifulSoup(page.text, 'html.parser')
 
     with open("data/teamWebPages/possessionData.html", "w", encoding='utf-8') as file:
+        file.write(str(soup))
+
+def save_page_injury(url):
+    page = requests.get(url)
+    soup = BeautifulSoup(page.text, 'html.parser')
+
+    with open("data/injury/injuryData.html", "w", encoding='utf-8') as file:
+        file.write(str(soup))
+
+def save_page_teamshooting_splits(url, team_name):
+    page = requests.get(url)
+    soup = BeautifulSoup(page.text, 'html.parser')
+
+    with open("data/teamStats/teamSplits/" + team_name + "Splits.html", "w", encoding='utf-8') as file:
         file.write(str(soup))
 
 def search_file(team_name):
@@ -115,13 +168,14 @@ def search_file(team_name):
                 name = name_token[0]
             # Adds name into roster set to filter out what players are on such team
             # Finally adds the players name, position, and height to the player class
-            roster_set.add(name)
-            pos = roster_col[index][1].text
-            height = roster_col[index][2].text
-            player.append(name)
-            player.append(pos)
-            player.append(height)
-            stats_data.append(player)
+            if name not in INJURED:
+                roster_set.add(name)
+                pos = roster_col[index][1].text
+                height = roster_col[index][2].text
+                player.append(name)
+                player.append(pos)
+                player.append(height)
+                stats_data.append(player)
 
             index += 1
 
@@ -178,6 +232,7 @@ def search_file(team_name):
             name = stats_data[index][0]
             if name not in roster_set:
                 indexes_to_remove.append(index)
+            
         
         # Removes last players until there are 10 left on roster 
         for index in range(len(indexes_to_remove)-1, -1, -1):
@@ -230,7 +285,7 @@ def search_file(team_name):
                 stats_data[player].append(norm_stats[player][index])
 
         # Adds advanced stats into the stats data list
-        
+         
         for player in range(len(stats_data)):
             for index in range(3, len(adv_stats[player]), 1):
                 stat = adv_stats[player][index]
@@ -267,6 +322,62 @@ def search_file(team_name):
                 else:
                     continue
  
+        #Find Home and Away Shooting Percentage ABRV, POS_TIME, HOME 2pt%, AWAY 2pt%, HOME 3pt%, AWAY 3pt%
+        with open("data/teamStats/teamSplits/" + team_name + "Splits.html", encoding='utf-8') as file:
+            contents = file.read()
+            soup = BeautifulSoup(contents, "lxml")
+            table = soup.find(class_="table_wrapper")
+            # print(table)
+            table_rows = table.find_all('tr')
+            table_cols = []
+            team_stats_splits = []
+            temp_team_splits = []
+            for row in table_rows:
+                table_cols.append(row.find_all('td'))
+
+
+            # Iterate through the table_cols in order to see the specific row we want. We know that the row that we want is
+            # Row 4 and 5 (Home and Away/ROAD rows), We then want specific col values of FG, FGA, 3P, 3PA
+            for i in range(4, 6, 1):
+                # Iterate through array of cols to get specific value for the values we need stated above\
+                for k in range(4, 8, 1):
+                    temp_team_splits.append(table_cols[i][k].text)
+            # temp team splits array is ordered by [FG@Home, FGA@Home, 3P@Home, 3PA@Home, FG@Away, FGA@Away, 3P@Away, 3PA@Away]
+            # main array ordered by [2PT% @ Home, 3P% @ Home, 2PT% @ Away, 3PT% @ Away, AVG 2P, AVG 3P]
+            FGMadeHome = float(temp_team_splits[0])
+            FGAHome = float(temp_team_splits[1])
+            threePTsMadeHome = float(temp_team_splits[2])
+            threePTAHome = float(temp_team_splits[3])
+            FGMadeAway = float(temp_team_splits[4])
+            FGAAway = float(temp_team_splits[5])
+            threePTsMadeAway = float(temp_team_splits[6]) 
+            threePTAAway = float(temp_team_splits[7]) 
+            twoPT_attempts_Home = (FGAHome - threePTAHome)
+            twoPT_made_Home = (FGMadeHome - threePTsMadeHome)
+            twoPT_attempts_Away = (FGAAway - threePTAAway)
+            twoPT_made_Away = (FGMadeAway - threePTsMadeAway)
+
+            twoPT_percentage_home = twoPT_made_Home / twoPT_attempts_Home 
+            twoPT_percentage_away = twoPT_made_Away / twoPT_attempts_Away 
+            threePT_percentage_home = threePTsMadeHome / threePTAHome
+            threePT_percentage_away = threePTsMadeAway / threePTAAway
+            avg_two_pt = (twoPT_percentage_home + twoPT_percentage_away) / 2.0
+            avg_three_pt = (threePT_percentage_home + threePT_percentage_away) / 2.0
+
+            twoPT_percentage_margin_home = twoPT_percentage_home - avg_two_pt
+            threePT_percentage_margin_home = threePT_percentage_home - avg_three_pt
+            twoPT_percentage_margin_away = twoPT_percentage_away - avg_two_pt
+            threePT_percentage_margin_away = threePT_percentage_away - avg_three_pt
+
+            team_stats_splits.append(twoPT_percentage_margin_home)
+            team_stats_splits.append(threePT_percentage_margin_home)
+            team_stats_splits.append(twoPT_percentage_margin_away)
+            team_stats_splits.append(threePT_percentage_margin_away)
+
+            splits_headers = ["2PT% Margin Home", "3PT% Margin Home", "2PT% Margin Away", "3PT% Margin Away"]
+            stats_data.append(splits_headers)
+            stats_data.append(team_stats_splits)
+
         # Adjust minutes to equal to 240
         total_minutes = 0;
         # Iterate through the stats_data list and get the total minutes
@@ -370,72 +481,111 @@ def getAbbreviation(team_name):
     elif team_name == "hornets":
         return "CHA"
     
+isConnectingToSite = False
+isConnectingInjury = False
+isConnectingSplits = False
+isSearchingFile = True
+
+if isConnectingInjury:
+    save_page_injury("https://www.cbssports.com/nba/injuries/daily/")
+
+if isConnectingToSite:
+    save_page(phi, "76ers")   
+    save_page(mil, "bucks") 
+    save_page(chi, "bulls")  
+    save_page(cle, "cavaliers")    
+    save_page(bos, "celtics")   
+    save_page(lac, "clippers") 
+    save_page(mem, "grizzlies")
+    save_page(atl, "hawks")  
+    save_page(heat, "heat")  
+    save_page(cha, "hornets")       
+    save_page(uta, "jazz")   
+    save_page(sac, "kings")   
+    save_page(nyk, "knicks") 
+    save_page(lal, "lakers")  
+    save_page(dal, "mavericks")  
+    save_page(orl, "magic")   
+    save_page(bkn, "nets") 
+    save_page(den, "nuggets")  
+    save_page(ind, "pacers") 
+    save_page(nop, "pelicans") 
+    save_page(det, "pistons") 
+    save_page(tor, "raptors")   
+    save_page(hou, "rockets")    
+    save_page(sas, "spurs")  
+    save_page(pho, "suns")   
+    save_page(tim, "timberwolves") 
+    save_page(okc, "thunder")    
+    save_page(por, "trailblazers")  
+    save_page(gsw, "warriors")  
+    save_page(was, "wizards")  
 
 
-# injury_scrape("https://www.cbssports.com/nba/injuries/daily/")
-
-# save_page(phi, "76ers")   
-# save_page(mil, "bucks") 
-# save_page(chi, "bulls")  
-# save_page(cle, "cavaliers")    
-# save_page(bos, "celtics")   
-# save_page(lac, "clippers") 
-# save_page(mem, "grizzlies")
-# save_page(atl, "hawks")  
-# save_page(heat, "heat")  
-# save_page(cha, "hornets")       
-# save_page(uta, "jazz")   
-# save_page(sac, "kings")   
-# save_page(nyk, "knicks") 
-# save_page(lal, "lakers")  
-# save_page(dal, "mavericks")  
-# save_page(orl, "magic")   
-# save_page(bkn, "nets") 
-# save_page(den, "nuggets")  
-# save_page(ind, "pacers") 
-# save_page(nop, "pelicans") 
-# save_page(det, "pistons") 
-# save_page(tor, "raptors")   
-# save_page(hou, "rockets")    
-# save_page(sas, "spurs")  
-# save_page(pho, "suns")   
-# save_page(tim, "timberwolves") 
-# save_page(okc, "thunder")    
-# save_page(por, "trailblazers")  
-# save_page(gsw, "warriors")  
-# save_page(was, "wizards")  
-
+if isConnectingSplits:
+    save_page_teamshooting_splits(phi_splits, "76ers")   
+    save_page_teamshooting_splits(mil_splits, "bucks") 
+    save_page_teamshooting_splits(chi_splits, "bulls")  
+    save_page_teamshooting_splits(cle_splits, "cavaliers")    
+    save_page_teamshooting_splits(bos_splits, "celtics")   
+    save_page_teamshooting_splits(lac_splits, "clippers") 
+    save_page_teamshooting_splits(mem_splits, "grizzlies")
+    save_page_teamshooting_splits(atl_splits, "hawks")  
+    save_page_teamshooting_splits(heat_splits, "heat")  
+    save_page_teamshooting_splits(cha_splits, "hornets")       
+    save_page_teamshooting_splits(uta_splits, "jazz")   
+    save_page_teamshooting_splits(sac_splits, "kings")   
+    save_page_teamshooting_splits(nyk_splits, "knicks") 
+    save_page_teamshooting_splits(lal_splits, "lakers")  
+    save_page_teamshooting_splits(dal_splits, "mavericks")  
+    save_page_teamshooting_splits(orl_splits, "magic")   
+    save_page_teamshooting_splits(bkn_splits, "nets") 
+    save_page_teamshooting_splits(den_splits, "nuggets")  
+    save_page_teamshooting_splits(ind_splits, "pacers") 
+    save_page_teamshooting_splits(nop_splits, "pelicans") 
+    save_page_teamshooting_splits(det_splits, "pistons") 
+    save_page_teamshooting_splits(tor_splits, "raptors")   
+    save_page_teamshooting_splits(hou_splits, "rockets")    
+    save_page_teamshooting_splits(sas_splits, "spurs")  
+    save_page_teamshooting_splits(pho_splits, "suns")   
+    save_page_teamshooting_splits(tim_splits, "timberwolves") 
+    save_page_teamshooting_splits(okc_splits, "thunder")    
+    save_page_teamshooting_splits(por_splits, "trailblazers")  
+    save_page_teamshooting_splits(gsw_splits, "warriors")  
+    save_page_teamshooting_splits(was_splits, "wizards")  
 # save_page_possession_time("http://stats.inpredictable.com/nba/ssnTeamPoss.php")
 
-search_file("76ers")   
-search_file("bucks") 
-search_file("bulls")  
-search_file("cavaliers")    
-search_file("celtics")   
-search_file("clippers") 
-search_file("grizzlies")
-search_file("hawks")  
-search_file("heat")  
-search_file("hornets")       
-search_file("jazz")   
-search_file("kings")   
-search_file("knicks") 
-search_file("lakers")  
-search_file("mavericks")  
-search_file("magic")   
-search_file("nets") 
-search_file("nuggets")  
-search_file("pacers") 
-search_file("pelicans") 
-search_file("pistons") 
-search_file("raptors")   
-search_file("rockets")    
-search_file("spurs")  
-search_file("suns")   
-search_file("timberwolves") 
-search_file("thunder")    
-search_file("trailblazers")  
-search_file("warriors")  
-search_file("wizards")  
+if isSearchingFile:
+    injury_scrape("data/injury/injuryData.html")
+    search_file("76ers")   
+    search_file("bucks") 
+    search_file("bulls")  
+    search_file("cavaliers")    
+    search_file("celtics")   
+    search_file("clippers") 
+    search_file("grizzlies")
+    search_file("hawks")  
+    search_file("heat")  
+    search_file("hornets")       
+    search_file("jazz")   
+    search_file("kings")   
+    search_file("knicks") 
+    search_file("lakers")  
+    search_file("mavericks")  
+    search_file("magic")   
+    search_file("nets") 
+    search_file("nuggets")  
+    search_file("pacers") 
+    search_file("pelicans") 
+    search_file("pistons") 
+    search_file("raptors")   
+    search_file("rockets")    
+    search_file("spurs")  
+    search_file("suns")   
+    search_file("timberwolves") 
+    search_file("thunder")    
+    search_file("trailblazers")  
+    search_file("warriors")  
+    search_file("wizards")  
 
   

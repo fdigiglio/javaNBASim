@@ -52,6 +52,87 @@ public class Team {
                     possessionLine = player;
                     break;
                 }
+                
+                // Otherwise splits the string on commas because the file is a .csv
+                String[] playerStats = player.split(",");
+                // Creates a new player using that String array
+                Player playerObject = new Player(playerStats);
+                arrayOfPlayers[index] = playerObject;
+                originalLineup[index] = playerObject;
+
+                player = buffer.readLine();
+                index++;
+            }
+            String[] possArray = possessionLine.split(",");
+            this.abbrv = possArray[0];
+            this.timePerPossession = Double.parseDouble(possArray[1]);
+
+            for(int i=0; i<arrayOfPlayers.length / 2; i++){
+                fiveOnCourt[i] = arrayOfPlayers[i];  
+                originalFiveOnCourt[i] = arrayOfPlayers[i];  
+            }
+
+            for(int i=arrayOfPlayers.length/2; i<arrayOfPlayers.length; i++){
+                fiveBench[i-5] = arrayOfPlayers[i];    
+                originalFiveBench[i-5] = arrayOfPlayers[i];
+            }
+
+        } catch(IOException ie){
+            System.out.println(filename + "File Not Found");
+        }
+    }
+
+    public Team(String name, char homeOrAway){
+        this.name = name;
+        filename = "data/teamStats/" + name + ".csv";
+        try(FileReader filereader = new FileReader(filename); BufferedReader buffer = new BufferedReader(filereader)){
+            // Skip header
+            buffer.readLine();
+            // Reads the second line for player
+            String player = buffer.readLine();
+            
+            String possessionLine = "";
+            int index = 0;
+            while(player != null){
+                // Checks if the index is 10 because after that it is supposed to represent the teams abbreviation and seconds per possession
+                if(index == 10){
+                    possessionLine = player;
+                    player = buffer.readLine();
+                    index++;
+                    continue;
+                }
+                if(index > 10 && index != 12){
+                    player = buffer.readLine();
+                    index++;
+                    continue;
+                }
+                if(index == 12){
+                    //If team is hometeam
+                    //  then get the margin @ home and apply it to each player for both 2PT and 3PT
+                    String[] homeAwayAdvatangeArray = player.split(",");
+                    if(homeOrAway == 'H'){
+                        for(int i=0; i<arrayOfPlayers.length; i++){
+                            double twoPointMarginHome = Double.parseDouble(homeAwayAdvatangeArray[0]);
+                            double threePointMarginHome = Double.parseDouble(homeAwayAdvatangeArray[1]);
+                            arrayOfPlayers[i].setTwoPointPercentage(arrayOfPlayers[i].getTwoPointPercentage() + twoPointMarginHome);
+                            arrayOfPlayers[i].setThreePointPercentage(arrayOfPlayers[i].getThreePointPercentage() + threePointMarginHome);
+                            // originalLineup[i].setTwoPointPercentage(originalLineup[i].getTwoPointPercentage() + twoPointMarginHome);
+                            // originalLineup[i].setThreePointPercentage(originalLineup[i].getThreePointPercentage() + threePointMarginHome);
+                        }
+                    } else if(homeOrAway == 'A'){
+                        for(int i=0; i<arrayOfPlayers.length; i++){
+                            double twoPointMarginAway = Double.parseDouble(homeAwayAdvatangeArray[2]);
+                            double threePointMarginAway = Double.parseDouble(homeAwayAdvatangeArray[3]);
+                            arrayOfPlayers[i].setTwoPointPercentage(arrayOfPlayers[i].getTwoPointPercentage() + twoPointMarginAway);
+                            arrayOfPlayers[i].setThreePointPercentage(arrayOfPlayers[i].getThreePointPercentage() + threePointMarginAway);
+                            // originalLineup[i].setTwoPointPercentage(originalLineup[i].getTwoPointPercentage() + twoPointMarginAway);
+                            // originalLineup[i].setThreePointPercentage(originalLineup[i].getThreePointPercentage() + threePointMarginAway);
+                        }
+                    }
+
+                    break;
+                    
+                }
                 // Otherwise splits the string on commas because the file is a .csv
                 String[] playerStats = player.split(",");
                 // Creates a new player using that String array
@@ -260,8 +341,16 @@ public class Team {
     
     public static void main(String[] args) {
         Team heat = new Team("heat");
-        // System.out.println(Arrays.toString(heat.getArrayOfPlayers()));
+        Team heatUpdateHome = new Team("heat", 'H');
+        Team heatUpdateAway = new Team("heat", 'A');
+        
         Player[] arr  = heat.getArrayOfPlayers();
+        Player[] heatHome = heatUpdateHome.getArrayOfPlayers();
+        Player[] heatAway = heatUpdateAway.getArrayOfPlayers();
+        System.out.println("Home 3PT%: " + heatHome[0].getThreePointPercentage());
+        System.out.println("Away 3PT%: " + heatAway[0].getThreePointPercentage());
+        System.out.println("PreUpdate 3PT%: " + arr[0].getThreePointPercentage());
+        // System.out.println(Arrays.toString(heat.getArrayOfPlayers()));
         // System.out.println(Arrays.toString(arr));
         Arrays.sort(arr);
         Player[] fiveOn = heat.getFiveOnCourt();
