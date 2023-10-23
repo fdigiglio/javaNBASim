@@ -15,12 +15,13 @@ public class StatisticalAnalysis{
      * Make this a multi threaded in order to improve speed on running games in the millions
      */
     public static String[][] playNumGames(Team team1, Team team2, int nTimes){
-        String[] headers = {"NAME", "WIN %", "# of Wins"};
+        //Add back player PPG to see how impactful certain players can be
+        String[] headers = {"NAME", "WIN %", "# of Wins", "Team AVG PTS/G"};
         Game game = new Game(team1, team2);
         String[][] stats = {
             headers,
-            {team1.getName().toUpperCase(), null, null},
-            {team2.getName().toUpperCase(), null, null}
+            {team1.getName().toUpperCase(), null, null, null},
+            {team2.getName().toUpperCase(), null, null, null}
         };
 
         for(int i=0; i<nTimes; i++){
@@ -36,6 +37,8 @@ public class StatisticalAnalysis{
         stats[2][1] = team2WinPercentage + "%";
         stats[1][2] = team1.getWins() + " Total Wins";
         stats[2][2] = team2.getWins() + " Total Wins";
+        stats[1][3] = team1.getAveragePointsTeam() + " PTS/G";
+        stats[2][3] = team2.getAveragePointsTeam() + " PTS/G";
 
         return stats;
     }
@@ -48,7 +51,7 @@ public class StatisticalAnalysis{
         try(FileWriter filewriter = new FileWriter(filePath); PrintWriter printer = new PrintWriter(filewriter)){
             // printer.write("TEAM NAME,WIN PERCENTAGE\n");
             for(int i=0; i<stats.length; i++){
-                printer.write(stats[i][0] + "," + stats[i][1] + "," + stats[i][2] + "\n");
+                printer.write(stats[i][0] + "," + stats[i][1] + "," + stats[i][2] + "," + stats[i][3] + "\n");
             }
         } catch(IOException e){
             System.out.println("FILE NOT FOUND");
