@@ -67,11 +67,12 @@ public class StatisticalAnalysis{
          */
         Scanner scan = new Scanner(System.in);
 
-        System.out.print("Enter Team for preseason testing >> ");
-        String teamCurrent = scan.nextLine();
+        //Comment these out unless for preseason testing
+        // System.out.print("Enter Team for preseason testing >> ");
+        // String teamCurrent = scan.nextLine();
 
-        System.out.print("Enter home or away >> ");
-        String homeOrAway = scan.nextLine();
+        // System.out.print("Enter home or away >> ");
+        // String homeOrAway = scan.nextLine();
 
         System.out.print("Enter number of teams playing >> ");
         int sizeOfArray = scan.nextInt();
@@ -83,9 +84,9 @@ public class StatisticalAnalysis{
         System.out.print("Enter today's date (12052023)>> ");
         String date = scan.next();
         // For Season Games
-        // String filepath = "data/statsOfGames/2023-2024-Season/Games/" + date;
+        String filepath = "data/statsOfGames/2023-2024-Season/Games/" + date;
         // For preseason predictions
-        String filepath = "data/statsOfGames/2023-2024-Season/Preseason-Predictions/" + teamCurrent + "/" + homeOrAway;
+        // String filepath = "data/statsOfGames/2023-2024-Season/Preseason-Predictions/" + teamCurrent + "/" + homeOrAway;
         File file = new File(filepath);
         file.mkdir();
 
