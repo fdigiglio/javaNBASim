@@ -123,6 +123,46 @@ def save_page_teamshooting_splits(url, team_name):
     with open("data/teamStats/teamSplits/" + team_name + "Splits.html", "w", encoding='utf-8') as file:
         file.write(str(soup))
 
+
+def save_page_nba_schedule(url):
+    page = requests.get(url)
+    soup = BeautifulSoup(page.text, 'html.parser')
+
+    with open("data/schedule/todaySchedule.html", "w", encoding='utf-8') as file:
+        file.write(str(soup))
+
+
+def search_schedule():
+    headers = ["Home", "Away"]
+    file_name = "todaySchedule.html"
+    path = "data/schedule/" + file_name
+
+    schedule_real = []
+    with open(path, 'r', encoding='utf-8') as file:
+        contents = file.read()
+        soup = BeautifulSoup(contents, 'html.parser')
+
+        schedule = soup.find_all(class_='TeamLogoNameLockup')
+        
+
+        for index in range(1, len(schedule), 2):
+            game = []
+            game.append(schedule[index].text)
+            game.append(schedule[index-1].text)
+            schedule_real.append(game)
+        # for game in schedule:
+        
+        print(schedule_real)
+
+        sche = pd.DataFrame(schedule_real, columns = headers)
+        #create team filename
+        file_name = "todaySchedule.csv"
+        path = "data/schedule/" + file_name
+        sche.to_csv(path, index=False, encoding="utf-8")
+        print("Updated Schedule")
+        #     print(game.text)
+        # print(schedule)
+
 def search_file(team_name):
     roster_set = set()
     stats_data = []
@@ -484,7 +524,8 @@ def getAbbreviation(team_name):
 isConnectingToSite = False
 isConnectingInjury = False
 isConnectingSplits = False
-isSearchingFile = True
+isConnectingToSchedule = True
+isSearchingFile = False
 
 if isConnectingInjury:
     save_page_injury("https://www.cbssports.com/nba/injuries/daily/")
@@ -554,6 +595,10 @@ if isConnectingSplits:
     save_page_teamshooting_splits(gsw_splits, "warriors")  
     save_page_teamshooting_splits(was_splits, "wizards")  
 # save_page_possession_time("http://stats.inpredictable.com/nba/ssnTeamPoss.php")
+
+if isConnectingToSchedule:
+    save_page_nba_schedule("https://www.cbssports.com/nba/schedule/");
+    search_schedule()
 
 if isSearchingFile:
     injury_scrape("data/injury/injuryData.html")
