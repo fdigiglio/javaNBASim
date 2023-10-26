@@ -12,7 +12,7 @@ def getDate():
 
 getDate()
 
-filepath = "data/statsOfGames/2023-2024-Season/Games/" + getDate();
+filepath = "~/miniProj/JavaBasketballSim/simulator/data/statsOfGames/2023-2024-Season/Games/" + getDate();
 copyFromPath = filepath;
 copyToPath = "~/miniProj/dataNbaSim/data/2023-2024-Season/Games/";
 copyCommand = "cp -R " + copyFromPath + " " + copyToPath;
