@@ -190,25 +190,12 @@ public class StatisticalAnalysis{
         System.out.println("Took " + totalTime + " seconds to simulate " + homeTeams.size() + " number of fixtures " + amountOfTimes + " times each");
 
         //Works properly
-        Runtime r = Runtime.getRuntime();
-        Process p = r.exec(copyCommand.split(" "));
-        p.waitFor();
-        
-        //Execute Git Commands (Run Python script)
-        Process cD = r.exec(changeDirectory.split(" "));
-        cD.waitFor();
-        System.out.println("Changed Directory");
-        Process gA = r.exec(gitAdd.split(" "));
-        gA.waitFor();
-        System.out.println("Added to stage");
-        Process gC = r.exec(gitCommit.split(" "));
-        gC.waitFor();
-        System.out.println("Committed");
-        Process gP = r.exec(gitPush.split(""));
-        gP.waitFor();
-        System.out.println("Pushed");
+        //Run python script
 
-        // Run system commands to copy the current filepath to the dataSim path and then push to github
+        String command = "python src/main/command_automation.py";
+        Runtime r = Runtime.getRuntime();
+        Process p = r.exec(command.split(" "));
+        
     }
 
     public void simulateGamesManually(){
