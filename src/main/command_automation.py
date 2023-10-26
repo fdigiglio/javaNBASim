@@ -22,8 +22,10 @@ gitCommit = "git commit -m \"PROBABILITY-UPDATE\"";
 gitPush = "git push";
 
 os.system(copyCommand)
+print("Completed Copy")
 time.sleep(0.25)
 os.system(changeDirectory)
+print("Completed CD")
 os.system(gitAdd)
 time.sleep(0.25)
 os.system(gitCommit)
