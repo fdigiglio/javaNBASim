@@ -142,9 +142,18 @@ public class StatisticalAnalysis{
         return "Completed " + stats[1][0] + " vs. " + stats[2][0];
     }
 
-    public void simulateGamesAutomatically(){
+    public void simulateGamesAutomatically() throws IOException, InterruptedException{
 
-        String filepath = "data/statsOfGames/2023-2024-Season/Games/testing/" + getDate();
+        String filepath = "data/statsOfGames/2023-2024-Season/Games/" + getDate();
+
+        String copyFromPath = filepath;
+        String copyToPath = "~/miniProj/dataNbaSim/data/2023-2024-Season/Games/";
+        String copyCommand = "cp -R " + copyFromPath + " " + copyToPath;
+        String changeDirectory = "cd ~/miniProj/dataNbaSim/data/";
+        String gitAdd = "git add .";
+        String gitCommit = "git commit -m \"PROBABILITY-UPDATE\""; 
+        String gitPush = "git push";
+
 
         File file = new File(filepath);
         file.mkdir();
@@ -180,6 +189,26 @@ public class StatisticalAnalysis{
         double totalTime = (end - start) / 1000.0;
         System.out.println("Took " + totalTime + " seconds to simulate " + homeTeams.size() + " number of fixtures " + amountOfTimes + " times each");
 
+        //Works properly
+        Runtime r = Runtime.getRuntime();
+        Process p = r.exec(copyCommand.split(" "));
+        p.waitFor();
+        
+        //Execute Git Commands (Run Python script)
+        Process cD = r.exec(changeDirectory.split(" "));
+        cD.waitFor();
+        System.out.println("Changed Directory");
+        Process gA = r.exec(gitAdd.split(" "));
+        gA.waitFor();
+        System.out.println("Added to stage");
+        Process gC = r.exec(gitCommit.split(" "));
+        gC.waitFor();
+        System.out.println("Committed");
+        Process gP = r.exec(gitPush.split(""));
+        gP.waitFor();
+        System.out.println("Pushed");
+
+        // Run system commands to copy the current filepath to the dataSim path and then push to github
     }
 
     public void simulateGamesManually(){
@@ -250,7 +279,7 @@ public class StatisticalAnalysis{
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
         /**
          * ADD ANOTHER COLUMN TO GAME STATS COMPARING HOW MANY GAMES ONE 
          * AUTOMATE THIS ()
