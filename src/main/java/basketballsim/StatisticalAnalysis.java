@@ -196,6 +196,7 @@ public class StatisticalAnalysis{
         Runtime r = Runtime.getRuntime();
         Process p = r.exec(command.split(" "));
         
+        System.out.println("PUSHED RESULTS TO DATASIM GITHUB!");
     }
 
     public void simulateGamesManually(){
@@ -275,6 +276,7 @@ public class StatisticalAnalysis{
          * Add functionality of newly added home and away shooting percentages (DONE)
          */
 
+        
         StatisticalAnalysis stat = new StatisticalAnalysis();
 
         //Call this function when simulating manually

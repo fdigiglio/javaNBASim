@@ -11,40 +11,40 @@ https://www.rotowire.com/basketball/injury-report.php
 
 """
 #General Team Stats
-heat = "https://www.basketball-reference.com/teams/MIA/2023.html"
-bos = "https://www.basketball-reference.com/teams/BOS/2023.html"
-lal = "https://www.basketball-reference.com/teams/LAL/2023.html"
-lac = "https://www.basketball-reference.com/teams/LAC/2023.html"
-cha = "https://www.basketball-reference.com/teams/CHO/2023.html"
-atl = "https://www.basketball-reference.com/teams/ATL/2023.html"
+heat = "https://www.basketball-reference.com/teams/MIA/2024.html"
+bos = "https://www.basketball-reference.com/teams/BOS/2024.html"
+lal = "https://www.basketball-reference.com/teams/LAL/2024.html"
+lac = "https://www.basketball-reference.com/teams/LAC/2024.html"
+cha = "https://www.basketball-reference.com/teams/CHO/2024.html"
+atl = "https://www.basketball-reference.com/teams/ATL/2024.html"
 
-orl = "https://www.basketball-reference.com/teams/ORL/2023.html"
-mem = "https://www.basketball-reference.com/teams/MEM/2023.html"
-nop = "https://www.basketball-reference.com/teams/NOP/2023.html"
-was = "https://www.basketball-reference.com/teams/WAS/2023.html"
-sas = "https://www.basketball-reference.com/teams/SAS/2023.html"
-dal = "https://www.basketball-reference.com/teams/DAL/2023.html"
+orl = "https://www.basketball-reference.com/teams/ORL/2024.html"
+mem = "https://www.basketball-reference.com/teams/MEM/2024.html"
+nop = "https://www.basketball-reference.com/teams/NOP/2024.html"
+was = "https://www.basketball-reference.com/teams/WAS/2024.html"
+sas = "https://www.basketball-reference.com/teams/SAS/2024.html"
+dal = "https://www.basketball-reference.com/teams/DAL/2024.html"
 
-hou = "https://www.basketball-reference.com/teams/HOU/2023.html"
-pho = "https://www.basketball-reference.com/teams/PHO/2023.html"
-gsw = "https://www.basketball-reference.com/teams/GSW/2023.html"
-sac = "https://www.basketball-reference.com/teams/SAC/2023.html"
-por = "https://www.basketball-reference.com/teams/POR/2023.html"
-uta = "https://www.basketball-reference.com/teams/UTA/2023.html"
+hou = "https://www.basketball-reference.com/teams/HOU/2024.html"
+pho = "https://www.basketball-reference.com/teams/PHO/2024.html"
+gsw = "https://www.basketball-reference.com/teams/GSW/2024.html"
+sac = "https://www.basketball-reference.com/teams/SAC/2024.html"
+por = "https://www.basketball-reference.com/teams/POR/2024.html"
+uta = "https://www.basketball-reference.com/teams/UTA/2024.html"
 
-tim = "https://www.basketball-reference.com/teams/MIN/2023.html"
-den = "https://www.basketball-reference.com/teams/DEN/2023.html"
-okc = "https://www.basketball-reference.com/teams/OKC/2023.html"
-nyk = "https://www.basketball-reference.com/teams/NYK/2023.html"
-tor = "https://www.basketball-reference.com/teams/TOR/2023.html"
-phi = "https://www.basketball-reference.com/teams/PHI/2023.html"
+tim = "https://www.basketball-reference.com/teams/MIN/2024.html"
+den = "https://www.basketball-reference.com/teams/DEN/2024.html"
+okc = "https://www.basketball-reference.com/teams/OKC/2024.html"
+nyk = "https://www.basketball-reference.com/teams/NYK/2024.html"
+tor = "https://www.basketball-reference.com/teams/TOR/2024.html"
+phi = "https://www.basketball-reference.com/teams/PHI/2024.html"
 
-mil = "https://www.basketball-reference.com/teams/MIL/2023.html"
-chi = "https://www.basketball-reference.com/teams/CHI/2023.html"
-cle = "https://www.basketball-reference.com/teams/CLE/2023.html"
-bkn = "https://www.basketball-reference.com/teams/BRK/2023.html"
-det = "https://www.basketball-reference.com/teams/DET/2023.html"
-ind = "https://www.basketball-reference.com/teams/IND/2023.html"
+mil = "https://www.basketball-reference.com/teams/MIL/2024.html"
+chi = "https://www.basketball-reference.com/teams/CHI/2024.html"
+cle = "https://www.basketball-reference.com/teams/CLE/2024.html"
+bkn = "https://www.basketball-reference.com/teams/BRK/2024.html"
+det = "https://www.basketball-reference.com/teams/DET/2024.html"
+ind = "https://www.basketball-reference.com/teams/IND/2024.html"
 
 
 #Splits Team Stats URLs
@@ -521,11 +521,11 @@ def getAbbreviation(team_name):
     elif team_name == "hornets":
         return "CHA"
     
-isConnectingToSite = False
+isConnectingToSite = True
 isConnectingInjury = False
 isConnectingSplits = False
 isConnectingToSchedule = True
-isSearchingFile = False
+isSearchingFile = True
 
 if isConnectingInjury:
     save_page_injury("https://www.cbssports.com/nba/injuries/daily/")
@@ -601,7 +601,7 @@ if isConnectingToSchedule:
     search_schedule()
 
 if isSearchingFile:
-    injury_scrape("data/injury/injuryData.html")
+    # injury_scrape("data/injury/injuryData.html")
     search_file("76ers")   
     search_file("bucks") 
     search_file("bulls")  
