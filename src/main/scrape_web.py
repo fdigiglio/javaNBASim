@@ -335,7 +335,42 @@ def search_file(team_name):
         # sort based on minutes played
         stats_data.sort(key=lambda x:x[6], reverse=True)
 
+        # Adjust minutes to equal to 240
+        total_minutes = 0;
+        # Iterate through the stats_data list and get the total minutes
+        for index in range(0, 10, 1):
+            total_minutes += float(stats_data[index][6])
+        
+        surplur_minutes = 0
+        minutes_rate = 240.0 / total_minutes 
+        # get the rate to change minutes by
+        for index in range(0, 10, 1):
+            stats_data[index][6] = round(float(stats_data[index][6]) * minutes_rate)
+        
+        # Adjust minutes to equal to 240
+        total_minutes = 0;
+        # Iterate through the stats_data list and get the total minutes
+        for index in range(0, 10, 1):
+            total_minutes += float(stats_data[index][6])
+        
+        # print(total_minutes, "BEFORE CHANGE")
+        if total_minutes > 240:
+            index = 9
+            while total_minutes > 240 and index > 0:
+                stats_data[index][6] = float(stats_data[index][6]) - 1
+                total_minutes -= 1
+                index -= 1
+        elif total_minutes < 240:
+            index = 0
+            while total_minutes < 240 and index < 10:
+                stats_data[index][6] = float(stats_data[index][6]) + 1
+                total_minutes += 1
+                index += 1
 
+
+        # Sort by minutes
+        # print(stats_data)
+        stats_data.sort(key=lambda x:x[6], reverse=True)
 
         # FIND Division
 
@@ -418,43 +453,54 @@ def search_file(team_name):
             stats_data.append(splits_headers)
             stats_data.append(team_stats_splits)
 
-        # Adjust minutes to equal to 240
-        total_minutes = 0;
-        # Iterate through the stats_data list and get the total minutes
-        for index in range(0, 10, 1):
-            total_minutes += float(stats_data[index][6])
+        # # Adjust minutes to equal to 240
+        # total_minutes = 0;
+        # # Iterate through the stats_data list and get the total minutes
+        # for index in range(0, 10, 1):
+        #     total_minutes += float(stats_data[index][6])
         
-        surplur_minutes = 0
-        minutes_rate = 240.0 / total_minutes 
-        # get the rate to change minutes by
-        for index in range(0, 10, 1):
-            stats_data[index][6] = round(float(stats_data[index][6]) * minutes_rate)
+        # surplur_minutes = 0
+        # minutes_rate = 240.0 / total_minutes 
+        # # get the rate to change minutes by
+        # for index in range(0, 10, 1):
+        #     stats_data[index][6] = round(float(stats_data[index][6]) * minutes_rate)
         
-        # Adjust minutes to equal to 240
-        total_minutes = 0;
-        # Iterate through the stats_data list and get the total minutes
-        for index in range(0, 10, 1):
-            total_minutes += float(stats_data[index][6])
+        # # Adjust minutes to equal to 240
+        # total_minutes = 0;
+        # # Iterate through the stats_data list and get the total minutes
+        # for index in range(0, 10, 1):
+        #     total_minutes += float(stats_data[index][6])
         
-        # print(total_minutes, "BEFORE CHANGE")
-        if total_minutes > 240:
-            index = 9
-            while total_minutes > 240 and index > 0:
-                stats_data[index][6] = float(stats_data[index][6]) - 1
-                total_minutes -= 1
-                index -= 1
-        elif total_minutes < 240:
-            index = 0
-            while total_minutes < 240 and index < 10:
-                stats_data[index][6] = float(stats_data[index][6]) + 1
-                total_minutes += 1
-                index += 1
+        # # print(total_minutes, "BEFORE CHANGE")
+        # if total_minutes > 240:
+        #     index = 9
+        #     while total_minutes > 240 and index > 0:
+        #         stats_data[index][6] = float(stats_data[index][6]) - 1
+        #         total_minutes -= 1
+        #         index -= 1
+        # elif total_minutes < 240:
+        #     index = 0
+        #     while total_minutes < 240 and index < 10:
+        #         stats_data[index][6] = float(stats_data[index][6]) + 1
+        #         total_minutes += 1
+        #         index += 1
+
+
+        # # Sort by minutes
+        # print(stats_data)
+        # stats_data.sort(key=lambda x:x[6], reverse=True)
 
         # Fill in 0.0 when empty string is in CSV
         for index in range(10):
-            for player_stat_index in range(len(stats_data[index])):
+            # print(len(stats_data[index]))
+            for player_stat_index in range(50):
+                # print(stats_data[index][0], stats_data[index][len(stats_data[index]) - 1])
+                if len(stats_data[index]) < 50:
+                    stats_data[index].append(0.0)
+                    continue
                 if stats_data[index][player_stat_index] == "":
                     stats_data[index][player_stat_index] = 0.0
+
 
         team_stats = pd.DataFrame(stats_data, columns = headers)
         #create team filename
@@ -530,8 +576,8 @@ def getAbbreviation(team_name):
 isConnectingToSite = False
 isConnectingInjury = False
 isConnectingSplits = False
-isConnectingToSchedule = False
-isSearchingFile = True
+isConnectingToSchedule = True
+isSearchingFile = False
 
 if isConnectingInjury:
     save_page_injury("https://www.cbssports.com/nba/injuries/daily/")
@@ -608,35 +654,35 @@ if isConnectingToSchedule:
 
 if isSearchingFile:
     # injury_scrape("data/injury/injuryData.html")
-    # search_file("76ers")   
-    # search_file("bucks") 
-    # search_file("bulls")  
+    search_file("76ers")   
+    search_file("bucks") 
+    search_file("bulls")  
     search_file("cavaliers")    
-    # search_file("celtics")   
-    # search_file("clippers") 
-    # search_file("grizzlies")
-    # search_file("hawks")  
-    # search_file("heat")  
-    # search_file("hornets")       
-    # search_file("jazz")   
-    # search_file("kings")   
-    # search_file("knicks") 
-    # search_file("lakers")  
-    # search_file("mavericks")  
-    # search_file("magic")   
-    # search_file("nets") 
-    # search_file("nuggets")  
-    # search_file("pacers") 
-    # search_file("pelicans") 
-    # search_file("pistons") 
-    # search_file("raptors")   
-    # search_file("rockets")    
-    # search_file("spurs")  
-    # search_file("suns")   
-    # search_file("timberwolves") 
-    # search_file("thunder")    
-    # search_file("trailblazers")  
-    # search_file("warriors")  
-    # search_file("wizards")  
+    search_file("celtics")   
+    search_file("clippers") 
+    search_file("grizzlies")
+    search_file("hawks")  
+    search_file("heat")  
+    search_file("hornets")       
+    search_file("jazz")   
+    search_file("kings")   
+    search_file("knicks") 
+    search_file("lakers")  
+    search_file("mavericks")  
+    search_file("magic")   
+    search_file("nets") 
+    search_file("nuggets")  
+    search_file("pacers") 
+    search_file("pelicans") 
+    search_file("pistons") 
+    search_file("raptors")   
+    search_file("rockets")    
+    search_file("spurs")  
+    search_file("suns")   
+    search_file("timberwolves") 
+    search_file("thunder")    
+    search_file("trailblazers")  
+    search_file("warriors")  
+    search_file("wizards")  
 
   
