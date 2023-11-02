@@ -1,4 +1,5 @@
 import os
+import random
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
@@ -48,40 +49,40 @@ ind = "https://www.basketball-reference.com/teams/IND/2024.html"
 
 
 #Splits Team Stats URLs
-heat_splits = "https://www.basketball-reference.com/teams/MIA/2023/splits"
-bos_splits = "https://www.basketball-reference.com/teams/BOS/2023/splits"
-lal_splits = "https://www.basketball-reference.com/teams/LAL/2023/splits"
-lac_splits = "https://www.basketball-reference.com/teams/LAC/2023/splits"
-cha_splits = "https://www.basketball-reference.com/teams/CHO/2023/splits"
-atl_splits = "https://www.basketball-reference.com/teams/ATL/2023/splits"
+heat_splits = "https://www.basketball-reference.com/teams/MIA/2024/splits"
+bos_splits = "https://www.basketball-reference.com/teams/BOS/2024/splits"
+lal_splits = "https://www.basketball-reference.com/teams/LAL/2024/splits"
+lac_splits = "https://www.basketball-reference.com/teams/LAC/2024/splits"
+cha_splits = "https://www.basketball-reference.com/teams/CHO/2024/splits"
+atl_splits = "https://www.basketball-reference.com/teams/ATL/2024/splits"
 
-orl_splits = "https://www.basketball-reference.com/teams/ORL/2023/splits"
-mem_splits = "https://www.basketball-reference.com/teams/MEM/2023/splits"
-nop_splits = "https://www.basketball-reference.com/teams/NOP/2023/splits"
-was_splits = "https://www.basketball-reference.com/teams/WAS/2023/splits"
-sas_splits = "https://www.basketball-reference.com/teams/SAS/2023/splits"
-dal_splits = "https://www.basketball-reference.com/teams/DAL/2023/splits"
+orl_splits = "https://www.basketball-reference.com/teams/ORL/2024/splits"
+mem_splits = "https://www.basketball-reference.com/teams/MEM/2024/splits"
+nop_splits = "https://www.basketball-reference.com/teams/NOP/2024/splits"
+was_splits = "https://www.basketball-reference.com/teams/WAS/2024/splits"
+sas_splits = "https://www.basketball-reference.com/teams/SAS/2024/splits"
+dal_splits = "https://www.basketball-reference.com/teams/DAL/2024/splits"
 
-hou_splits = "https://www.basketball-reference.com/teams/HOU/2023/splits"
-pho_splits = "https://www.basketball-reference.com/teams/PHO/2023/splits"
-gsw_splits = "https://www.basketball-reference.com/teams/GSW/2023/splits"
-sac_splits = "https://www.basketball-reference.com/teams/SAC/2023/splits"
-por_splits = "https://www.basketball-reference.com/teams/POR/2023/splits"
-uta_splits = "https://www.basketball-reference.com/teams/UTA/2023/splits"
+hou_splits = "https://www.basketball-reference.com/teams/HOU/2024/splits"
+pho_splits = "https://www.basketball-reference.com/teams/PHO/2024/splits"
+gsw_splits = "https://www.basketball-reference.com/teams/GSW/2024/splits"
+sac_splits = "https://www.basketball-reference.com/teams/SAC/2024/splits"
+por_splits = "https://www.basketball-reference.com/teams/POR/2024/splits"
+uta_splits = "https://www.basketball-reference.com/teams/UTA/2024/splits"
 
-tim_splits = "https://www.basketball-reference.com/teams/MIN/2023/splits"
-den_splits = "https://www.basketball-reference.com/teams/DEN/2023/splits"
-okc_splits = "https://www.basketball-reference.com/teams/OKC/2023/splits"
-nyk_splits = "https://www.basketball-reference.com/teams/NYK/2023/splits"
-tor_splits = "https://www.basketball-reference.com/teams/TOR/2023/splits"
-phi_splits = "https://www.basketball-reference.com/teams/PHI/2023/splits"
+tim_splits = "https://www.basketball-reference.com/teams/MIN/2024/splits"
+den_splits = "https://www.basketball-reference.com/teams/DEN/2024/splits"
+okc_splits = "https://www.basketball-reference.com/teams/OKC/2024/splits"
+nyk_splits = "https://www.basketball-reference.com/teams/NYK/2024/splits"
+tor_splits = "https://www.basketball-reference.com/teams/TOR/2024/splits"
+phi_splits = "https://www.basketball-reference.com/teams/PHI/2024/splits"
 
-mil_splits = "https://www.basketball-reference.com/teams/MIL/2023/splits"
-chi_splits = "https://www.basketball-reference.com/teams/CHI/2023/splits"
-cle_splits = "https://www.basketball-reference.com/teams/CLE/2023/splits"
-bkn_splits = "https://www.basketball-reference.com/teams/BRK/2023/splits"
-det_splits = "https://www.basketball-reference.com/teams/DET/2023/splits"
-ind_splits = "https://www.basketball-reference.com/teams/IND/2023/splits"
+mil_splits = "https://www.basketball-reference.com/teams/MIL/2024/splits"
+chi_splits = "https://www.basketball-reference.com/teams/CHI/2024/splits"
+cle_splits = "https://www.basketball-reference.com/teams/CLE/2024/splits"
+bkn_splits = "https://www.basketball-reference.com/teams/BRK/2024/splits"
+det_splits = "https://www.basketball-reference.com/teams/DET/2024/splits"
+ind_splits = "https://www.basketball-reference.com/teams/IND/2024/splits"
 
 INJURED = set()    
 
@@ -119,7 +120,7 @@ def save_page_injury(url):
 def save_page_teamshooting_splits(url, team_name):
     page = requests.get(url)
     soup = BeautifulSoup(page.text, 'html.parser')
-
+    time.sleep(random.randint(0, 2))
     with open("data/teamStats/teamSplits/" + team_name + "Splits.html", "w", encoding='utf-8') as file:
         file.write(str(soup))
 
@@ -576,8 +577,8 @@ def getAbbreviation(team_name):
 isConnectingToSite = False
 isConnectingInjury = False
 isConnectingSplits = False
-isConnectingToSchedule = True
-isSearchingFile = False
+isConnectingToSchedule = False
+isSearchingFile = True
 
 if isConnectingInjury:
     save_page_injury("https://www.cbssports.com/nba/injuries/daily/")
@@ -646,7 +647,7 @@ if isConnectingSplits:
     save_page_teamshooting_splits(por_splits, "trailblazers")  
     save_page_teamshooting_splits(gsw_splits, "warriors")  
     save_page_teamshooting_splits(was_splits, "wizards")  
-# save_page_possession_time("http://stats.inpredictable.com/nba/ssnTeamPoss.php")
+    # save_page_possession_time("http://stats.inpredictable.com/nba/ssnTeamPoss.php")
 
 if isConnectingToSchedule:
     save_page_nba_schedule("https://www.cbssports.com/nba/schedule/");
