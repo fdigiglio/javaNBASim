@@ -576,7 +576,7 @@ def getAbbreviation(team_name):
     
 isConnectingToSite = False
 isConnectingInjury = False
-isConnectingSplits = False
+isConnectingSplits = True
 isConnectingToSchedule = False
 isSearchingFile = True
 
@@ -654,17 +654,17 @@ if isConnectingToSchedule:
     search_schedule()
 
 if isSearchingFile:
-    # injury_scrape("data/injury/injuryData.html")
-    # search_file("76ers")   
-    # search_file("bucks") 
-    # search_file("bulls")  
-    # search_file("cavaliers")    
-    # search_file("celtics")   
-    # search_file("clippers") 
-    # search_file("grizzlies")
-    # search_file("hawks")  
-    # search_file("heat")  
-    # search_file("hornets")   #too many people out    
+    injury_scrape("data/injury/injuryData.html")
+    search_file("76ers")   
+    search_file("bucks") 
+    search_file("bulls")  
+    search_file("cavaliers")    
+    search_file("celtics")   
+    search_file("clippers") 
+    search_file("grizzlies")
+    search_file("hawks")  
+    search_file("heat")  
+    search_file("hornets")   #too many people out    
     search_file("jazz")   
     search_file("kings")   
     search_file("knicks") 
