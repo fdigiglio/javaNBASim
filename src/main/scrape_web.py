@@ -87,6 +87,7 @@ ind_splits = "https://www.basketball-reference.com/teams/IND/2024/splits"
 INJURED = set()    
 
 def injury_scrape(path):
+    # Add another site to grab injuries as different names are used Cameron Thomas = Cam Thomas
     with open(path, 'r', encoding='utf-8') as file:
         contents = file.read()
         soup = BeautifulSoup(contents, 'lxml')
@@ -647,7 +648,7 @@ if isConnectingSplits:
     save_page_teamshooting_splits(por_splits, "trailblazers")  
     save_page_teamshooting_splits(gsw_splits, "warriors")  
     save_page_teamshooting_splits(was_splits, "wizards")  
-# save_page_possession_time("http://stats.inpredictable.com/nba/ssnTeamPoss.php")
+save_page_possession_time("http://stats.inpredictable.com/nba/ssnTeamPoss.php")
 
 if isConnectingToSchedule:
     save_page_nba_schedule("https://www.cbssports.com/nba/schedule/");
