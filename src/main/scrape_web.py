@@ -648,7 +648,7 @@ if isConnectingSplits:
     save_page_teamshooting_splits(por_splits, "trailblazers")  
     save_page_teamshooting_splits(gsw_splits, "warriors")  
     save_page_teamshooting_splits(was_splits, "wizards")  
-# save_page_possession_time("http://stats.inpredictable.com/nba/ssnTeamPoss.php")
+    save_page_possession_time("http://stats.inpredictable.com/nba/ssnTeamPoss.php")
 
 if isConnectingToSchedule:
     save_page_nba_schedule("https://www.cbssports.com/nba/schedule/");
