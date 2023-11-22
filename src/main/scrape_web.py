@@ -575,10 +575,10 @@ def getAbbreviation(team_name):
     elif team_name == "hornets":
         return "CHA"
     
-isConnectingToSite = False
-isConnectingInjury = False
+isConnectingToSite = True
+isConnectingInjury = True
 isConnectingSplits = True
-isConnectingToSchedule = False
+isConnectingToSchedule = True
 isSearchingFile = True
 
 if isConnectingInjury:
