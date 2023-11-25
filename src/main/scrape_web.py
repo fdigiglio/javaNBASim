@@ -575,10 +575,10 @@ def getAbbreviation(team_name):
     elif team_name == "hornets":
         return "CHA"
     
-isConnectingToSite = True
-isConnectingInjury = True
-isConnectingSplits = True
-isConnectingToSchedule = True
+isConnectingToSite = False
+isConnectingInjury = False
+isConnectingSplits = False
+isConnectingToSchedule = False
 isSearchingFile = True
 
 if isConnectingInjury:
@@ -657,34 +657,34 @@ if isConnectingToSchedule:
 if isSearchingFile:
     injury_scrape("data/injury/injuryData.html")
     search_file("76ers")   
-    search_file("bucks") 
-    search_file("bulls")  
+    # search_file("bucks") 
+    # search_file("bulls")  
     search_file("cavaliers")    
-    search_file("celtics")   
+    # search_file("celtics")   
     search_file("clippers") 
-    search_file("grizzlies")
+    # search_file("grizzlies")
     search_file("hawks")  
     search_file("heat")  
-    search_file("hornets")   #too many people out    
+    # search_file("hornets")   #too many people out    
     search_file("jazz")   
-    search_file("kings")   
-    search_file("knicks") 
+    # search_file("kings")   
+    # search_file("knicks") 
     search_file("lakers")  
     search_file("mavericks")  
-    search_file("magic")   
+    # search_file("magic")   
     search_file("nets") 
-    search_file("nuggets")  
-    search_file("pacers") 
+    # search_file("nuggets")  
+    # search_file("pacers") 
     search_file("pelicans") 
-    search_file("pistons") 
-    search_file("raptors")   
-    search_file("rockets")    
-    search_file("spurs")  
-    search_file("suns")   
-    search_file("timberwolves") 
+    # search_file("pistons") 
+    # search_file("raptors")   
+    # search_file("rockets")    
+    # search_file("spurs")  
+    # search_file("suns")   
+    # search_file("timberwolves") 
     search_file("thunder")    
-    search_file("trailblazers")  
-    search_file("warriors")  
+    # search_file("trailblazers")  
+    # search_file("warriors")  
     search_file("wizards")  
 
   
