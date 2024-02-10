@@ -655,7 +655,7 @@ if isConnectingToSchedule:
     search_schedule()
 
 if isSearchingFile:
-    injury_scrape("data/injury/injuryData.html")
+    # injury_scrape("data/injury/injuryData.html")
     search_file("76ers")   
     search_file("bucks") 
     search_file("bulls")  
